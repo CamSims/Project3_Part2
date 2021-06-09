@@ -1,0 +1,69 @@
+---
+title: "Untitled"
+author: "Cameron Sims"
+date: "6/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source()
+```
+
+```{r}
+# Vector to hold CV estimates MSEs
+mses <- c()
+
+# Using k = c(2, 5, 10), perform random forest 30 times each
+for (k in c(2, 5, 10)) {
+  for (i in 1:30) {
+    mses <- append(mses, my_rf_cv(k))
+  }
+}
+
+# Separate MSEs by k
+dat <- data.frame(mse = mses, k = rep(c(2, 5, 10), each = 30))
+```
+
+```{r}
+# Create a boxplot for each value of k
+ggplot2::ggplot(data = dat, mapping = ggplot2::aes(x = as.factor(k), y = mse)) + 
+  ggplot2::geom_boxplot() +
+  ggplot2::labs(title = "Distribution Of MSE For Different Numbers Of Folds") +
+  ggplot2::xlab("Number of Folds") +
+  ggplot2::ylab("CV-Estimated MSE")
+
+# Calculate average CV estimate and standard deviation for k = 2
+two_avg <- mean(subset(dat, k == 2)$mse)
+two_sd <- sd(subset(dat, k == 2)$mse)
+
+# Calculate average CV estimate and standard deviation for k == 5
+five_avg <- mean(subset(dat, k == 5)$mse)
+five_sd <- sd(subset(dat, k == 5)$mse)
+
+# Calculate average CV estimate and standard deviation for k == 10
+ten_avg <- mean(subset(dat, k == 10)$mse)
+ten_sd <- sd(subset(dat, k == 10)$mse)
+
+# Display the average CV estimates and standard deviations in a table
+data.frame(Mean_CV = c(two_avg, five_avg, ten_avg),
+           SD_CV = c(two_sd, five_sd, ten_sd))
+```
+
+From the boxplots, it appears the median CV-Estimated MSE decreases as the
+number of folds increases. 5 folds has the smallest interquartile range of
+the three fold amounts and exists almost entirely within the range of the
+10-fold boxplot. The 2-fold boxplot has the largest range and is centered 
+higher than the other boxplots. Numerically, the table shows 10 folds has
+the lowest average CV estimate whereas five folds has the lowest CV standard
+deviation. Two folds has both the highest mean CV estimate and the highest
+CV standard deviation.
+
+Generally, test error (CV MSE) will decrease as the number of folds increases.
+This is because more data is being used to calculate the predicted value(s).
+However, after a certain point, this value can decrease as the model becomes
+less reliable (training error increases). As such, it is possible the best
+number of folds is close to five, or between five and ten. While ten folds
+might have the lowest mean CV-Estimated MSE, it has higher standard deviation
+than five-folds and thus is not conclusively better. 
+
