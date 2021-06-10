@@ -19,6 +19,13 @@ source("../Code/my_rf_cv.R")
 my_penguins <- read.csv("../Data/my_penguins.csv")
 ```
 
+In this analysis, I will use my_penguins.csv data to predict mody_mass_g using
+covariates bill_length_mm, bill_depth_mm, and flipper_length_mm. I will use
+fold sizes of 2, 5, and 10 and run 30 iterations with each size. I will then
+make 3 boxplots of the data, a table displaying the average CV estimate and the
+standard deviation of the CV estimates for each fold size, and discuss the
+observed results. The figures and results will be saved in respectively-named
+folders within the "Output" subfolder.
 
 ```{r}
 # Vector to hold CV estimates MSEs
