@@ -9,8 +9,9 @@ output: html_document
 # Display options
 knitr::opts_chunk$set(echo = TRUE)
 
-# Load necessary library
+# Load necessary libraries
 library("dplyr")
+library("ggplot2")
 
 # Source my_rf_cv function
 source("../Code/my_rf_cv.R")
@@ -38,17 +39,24 @@ for (k in c(2, 5, 10)) {
   }
 }
 
-# Separate MSEs by k
+# Save MSEs as 30 row, 3 column csv
+write.csv(data.frame(k_1 = mses[1:30], k_5 = mses[31:60], k_10 = mses[61:90]),
+                     "../Output/Results/simulation_results.csv")
+
+# Separate MSEs by k for boxplot
 dat <- data.frame(mse = mses, k = rep(c(2, 5, 10), each = 30))
 ```
 
 ```{r}
 # Create a boxplot for each value of k
-ggplot(data = dat, mapping = ggplot2::aes(x = as.factor(k), y = mse)) + 
+chart <- ggplot(data = dat, mapping = ggplot2::aes(x = as.factor(k), y = mse)) + 
   geom_boxplot() +
   labs(title = "Distribution Of MSE For Different Numbers Of Folds") +
   xlab("Number of Folds") +
   ylab("CV-Estimated MSE")
+
+# Save chart in "figures" sub-subfolder
+ggsave("mse_boxplot.pdf", chart, path = "../Output/Figures")
 
 # Calculate average CV estimate and standard deviation for k = 2
 two_avg <- mean(subset(dat, k == 2)$mse)
@@ -62,9 +70,12 @@ five_sd <- sd(subset(dat, k == 5)$mse)
 ten_avg <- mean(subset(dat, k == 10)$mse)
 ten_sd <- sd(subset(dat, k == 10)$mse)
 
-# Display the average CV estimates and standard deviations in a table
-data.frame(Mean_CV = c(two_avg, five_avg, ten_avg),
+# Save average CV estimates and standard deviations in a table
+summary_stats <- data.frame(Mean_CV = c(two_avg, five_avg, ten_avg),
            SD_CV = c(two_sd, five_sd, ten_sd))
+
+# Save summary statistics in "results" sub-subfolder
+saveRDS(summary_stats, file = "../Output/Results/summary_stats.rds")
 ```
 
 From the boxplots, it appears the median CV-Estimated MSE decreases as the
