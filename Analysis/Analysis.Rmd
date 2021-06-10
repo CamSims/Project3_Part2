@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Project 3 - Part 2"
 author: "Cameron Sims"
 date: "6/9/2021"
 output: html_document
@@ -47,7 +47,7 @@ write.csv(data.frame(k_1 = mses[1:30], k_5 = mses[31:60], k_10 = mses[61:90]),
 dat <- data.frame(mse = mses, k = rep(c(2, 5, 10), each = 30))
 ```
 
-```{r}
+```{r, message = FALSE}
 # Create a boxplot for each value of k
 chart <- ggplot(data = dat, mapping = ggplot2::aes(x = as.factor(k), y = mse)) + 
   geom_boxplot() +
