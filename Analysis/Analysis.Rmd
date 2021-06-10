@@ -44,11 +44,11 @@ dat <- data.frame(mse = mses, k = rep(c(2, 5, 10), each = 30))
 
 ```{r}
 # Create a boxplot for each value of k
-ggplot2::ggplot(data = dat, mapping = ggplot2::aes(x = as.factor(k), y = mse)) + 
-  ggplot2::geom_boxplot() +
-  ggplot2::labs(title = "Distribution Of MSE For Different Numbers Of Folds") +
-  ggplot2::xlab("Number of Folds") +
-  ggplot2::ylab("CV-Estimated MSE")
+ggplot(data = dat, mapping = ggplot2::aes(x = as.factor(k), y = mse)) + 
+  geom_boxplot() +
+  labs(title = "Distribution Of MSE For Different Numbers Of Folds") +
+  xlab("Number of Folds") +
+  ylab("CV-Estimated MSE")
 
 # Calculate average CV estimate and standard deviation for k = 2
 two_avg <- mean(subset(dat, k == 2)$mse)
