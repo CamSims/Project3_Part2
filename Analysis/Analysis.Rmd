@@ -16,9 +16,9 @@ library("dplyr")
 source("../Code/my_rf_cv.R")
 
 # Source data
-my_gapminder <- read.csv("../Data/my_gapminder.csv")
 my_penguins <- read.csv("../Data/my_penguins.csv")
 ```
+
 
 ```{r}
 # Vector to hold CV estimates MSEs
