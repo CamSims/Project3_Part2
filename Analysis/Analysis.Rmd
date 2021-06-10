@@ -6,8 +6,18 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+# Display options
 knitr::opts_chunk$set(echo = TRUE)
-source("C:/Users/camer/OneDrive/UW/Courses/2020-2021 (Senior Year)/Spring Quarter/STAT 302/projects/Project3_Part2/Project3_Part2/Code/my_rf_cv.R")
+
+# Load necessary library
+library("dplyr")
+
+# Source my_rf_cv function
+source("../Code/my_rf_cv.R")
+
+# Source data
+my_gapminder <- read.csv("../Data/my_gapminder.csv")
+my_penguins <- read.csv("../Data/my_penguins.csv")
 ```
 
 ```{r}
